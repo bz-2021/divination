@@ -138,7 +138,7 @@ export class Divination extends Component {
     self.state.angles.forEach((value, index) => {
       const rnd = Math.random();
       console.log('random: ' + rnd);
-      const totalDeg = value + flipDeg + (rnd > 0.5 ? 180 : 0);
+      const totalDeg = value + flipDeg + (rnd >= 0.5 ? 180 : 0);
       angles[index] = totalDeg;
     });
     // console.log('flip1: ' + flipDeg1 + ' 2: ' + flipDeg2 + ' 3: ' + flipDeg3);
