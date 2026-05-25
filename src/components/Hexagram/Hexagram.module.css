@@ -1,0 +1,60 @@
+.diagram {
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.25rem;
+}
+
+.lineRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: clamp(14px, 2.5vh, 22px);
+  position: relative;
+}
+
+.barContainer {
+  width: 180px;
+  height: 100%;
+  position: relative;
+}
+
+.bar {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.yang {
+  background: #b22222;
+}
+
+.yin {
+  background: #444;
+  width: 42%;
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+
+.yinLeft {
+  left: 0;
+}
+
+.yinRight {
+  right: 0;
+}
+
+.indicator {
+  position: absolute;
+  left: calc(50% + 98px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  font-size: 1rem;
+  line-height: 1;
+  text-align: center;
+  color: #b22222;
+  font-weight: bold;
+}
