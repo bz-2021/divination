@@ -1,0 +1,327 @@
+.container {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.heading {
+  font-size: 1rem;
+  color: var(--accent);
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+.count {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  transition: border-color 0.15s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+.cardRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.miniHex {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.miniLine {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.miniYang {
+  background: var(--accent);
+}
+
+.miniYin {
+  background: transparent;
+  position: relative;
+}
+
+.miniYin::before,
+.miniYin::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  background: var(--yin);
+  border-radius: 2px;
+}
+
+.miniYin::before {
+  left: 0;
+}
+
+.miniYin::after {
+  right: 0;
+}
+
+.cardBody {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.name {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 2px;
+}
+
+.changing {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.badge {
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.badgeYes {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.badgeNo {
+  background: #fce4ec;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex-shrink: 0;
+}
+
+.actionBtn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.actionBtn:hover {
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.actionBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.detailBody {
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.verifyGroup {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.verifyBtn {
+  padding: 0.2rem 0.6rem;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.verifyBtn:hover {
+  border-color: var(--accent);
+}
+
+.verifyActive {
+  border-color: #2e7d32;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.verifyFail {
+  border-color: #c62828;
+  background: #fce4ec;
+  color: #c62828;
+  font-weight: 600;
+}
+
+.detailHex {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.noteInput {
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.3rem 0.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+
+.noteInput:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.noteInput::placeholder {
+  color: var(--text-muted);
+}
+
+.noteText {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* confirm dialog */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.dialog {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 300px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 30px var(--shadow);
+  animation: scaleIn 0.15s ease-out;
+}
+
+.dialogText {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+.dialogBtns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.dialogBtn {
+  padding: 0.4rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dialogCancel {
+  background: var(--bg-prompt);
+  color: var(--text-muted);
+}
+
+.dialogCancel:hover {
+  background: var(--border);
+}
+
+.dialogConfirm {
+  background: var(--accent);
+  color: #fff;
+}
+
+.dialogConfirm:hover {
+  background: var(--accent-hover);
+}
+
+.empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 1rem 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

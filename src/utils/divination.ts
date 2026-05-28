@@ -58,14 +58,60 @@ export function getResult(lines: readonly LineValue[]): HexagramResult | null {
   };
 }
 
-function lineLabel(pos: number, val: LineValue): string {
-  const prefix = val > 1 ? '九' : '六';
-  const name = pos === 0 ? `初${prefix}` : pos === 5 ? `上${prefix}` : `${prefix}${pos + 1}`;
-  const mark = val === 0 ? ' \u00D7' : val === 3 ? ' \u25CB' : '';
-  return `${name}${mark}`;
+function getTransformedTrigramIndex(a: LineValue, b: LineValue, c: LineValue): TrigramIndex {
+  const bit = (v: LineValue) => (v === 0 || v === 2 ? 1 : 0);
+  return ((bit(c) << 2) | (bit(b) << 1) | bit(a)) as TrigramIndex;
 }
 
-export function generatePrompt(lines: readonly LineValue[], result: HexagramResult): string {
+export function getTransformedResult(lines: readonly LineValue[]): HexagramResult | null {
+  if (lines.length !== 6) return null;
+  if (getChangingLines(lines).length === 0) return null;
+
+  const downIndex = getTransformedTrigramIndex(lines[0], lines[1], lines[2]);
+  const upIndex = getTransformedTrigramIndex(lines[3], lines[4], lines[5]);
+
+  const guaNumber = (guaMap as number[][])[upIndex][downIndex];
+  const guaName = guaList[guaNumber - 1];
+
+  const upName = TRIGRAM_NAMES[upIndex];
+  const downName = TRIGRAM_NAMES[downIndex];
+
+  let fullName: string;
+  if (upIndex === downIndex) {
+    fullName = `${guaName} (${upName}为${TRIGRAM_SYMBOLS[upIndex]})`;
+  } else {
+    fullName = `${guaName} (${upName}${downName}${TRIGRAM_SYMBOLS[upIndex]}${TRIGRAM_SYMBOLS[downIndex]})`;
+  }
+
+  return {
+    guaIndex: guaNumber,
+    guaName,
+    fullName,
+    upTrigram: upName,
+    downTrigram: downName,
+    changingLines: [],
+  };
+}
+
+export function getTransformedLines(lines: readonly LineValue[]): LineValue[] {
+  return lines.map((v): LineValue => {
+    if (v === 0) return 3;
+    if (v === 3) return 0;
+    return v;
+  });
+}
+
+const CN_POS = ['', '二', '三', '四', '五', ''];
+
+export function lineLabel(pos: number, val: LineValue, withMark = false): string {
+  const prefix = val > 1 ? '九' : '六';
+  const name = pos === 0 ? `初${prefix}` : pos === 5 ? `上${prefix}` : `${prefix}${CN_POS[pos]}`;
+  if (!withMark) return name;
+  const mark = val === 0 ? '\u00D7' : val === 3 ? '\u25CB' : '';
+  return mark ? `${name} ${mark}` : name;
+}
+
+export function generatePrompt(lines: readonly LineValue[], result: HexagramResult, question = ''): string {
   const { fullName, upTrigram, downTrigram, changingLines } = result;
   const upSymbol = TRIGRAM_SYMBOLS[TRIGRAM_NAMES.indexOf(upTrigram)];
   const downSymbol = TRIGRAM_SYMBOLS[TRIGRAM_NAMES.indexOf(downTrigram)];
@@ -75,14 +121,21 @@ export function generatePrompt(lines: readonly LineValue[], result: HexagramResu
     .join('\n');
 
   const changingLabels = changingLines.length > 0
-    ? changingLines.map((n) => `第${n}爻（${lineLabel(n - 1, lines[n - 1])}）`).join('、')
+    ? changingLines.map((n) => `第${n}爻（${lineLabel(n - 1, lines[n - 1], true)}）`).join('、')
     : '无';
 
   const rule = RULES[changingLines.length] ?? '';
 
+  const trans = getTransformedResult(lines);
+  const transText = trans ? `\n之卦：${trans.fullName}` : '';
+
+  const questionLine = question.trim()
+    ? `\n我所占之事：${question.trim()}`
+    : '\n我所占之事：（请在此描述你想占问的事情）';
+
   return `你是一位精通周易的占卜师，请根据以下信息为我解卦：
 
-卦象：${fullName}
+卦象：${fullName}${transText}
 上卦：${upTrigram}（${upSymbol}），下卦：${downTrigram}（${downSymbol}）
 变爻：${changingLabels}，共 ${changingLines.length} 个变爻
 
@@ -95,7 +148,5 @@ ${lineDetails}
 1. 本卦卦辞大意
 2. 各变爻的爻辞与解读
 3. 综合判断
-4. 对求卦者的建议
-
-我所占之事：（请在此描述你想占问的事情）`;
+4. 对求卦者的建议${questionLine}`;
 }

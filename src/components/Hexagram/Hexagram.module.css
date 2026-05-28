@@ -1,9 +1,13 @@
 .diagram {
   width: 100%;
-  max-width: 280px;
+  max-width: 310px;
   display: flex;
   flex-direction: column-reverse;
   gap: 0.25rem;
+}
+
+.compact {
+  max-width: 170px;
 }
 
 .lineRow {
@@ -15,23 +19,44 @@
   position: relative;
 }
 
+.label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(50% - 128px);
+  width: 40px;
+  text-align: right;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
 .barContainer {
-  width: 180px;
+  width: 160px;
   height: 100%;
   position: relative;
+}
+
+.compact .barContainer {
+  width: 100px;
+}
+
+.compact .label {
+  display: none;
 }
 
 .bar {
   height: 100%;
   border-radius: 3px;
+  animation: lineIn 0.35s ease-out;
 }
 
 .yang {
-  background: #b22222;
+  background: var(--accent);
 }
 
 .yin {
-  background: #444;
+  background: var(--yin);
   width: 42%;
   position: absolute;
   top: 0;
@@ -48,13 +73,31 @@
 
 .indicator {
   position: absolute;
-  left: calc(50% + 98px);
   top: 50%;
   transform: translateY(-50%);
+  left: calc(50% + 88px);
   width: 22px;
   font-size: 1rem;
   line-height: 1;
   text-align: center;
-  color: #b22222;
+  color: var(--accent);
   font-weight: bold;
+  pointer-events: none;
+}
+
+.compact .indicator {
+  left: calc(50% + 60px);
+  font-size: 0.85rem;
+  width: 16px;
+}
+
+@keyframes lineIn {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+  }
 }

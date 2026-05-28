@@ -1,8 +1,10 @@
 import type { LineValue } from '../../types';
+import { lineLabel } from '../../utils/divination';
 import styles from './Hexagram.module.css';
 
 interface HexagramProps {
   lines: readonly LineValue[];
+  compact?: boolean;
 }
 
 const INDICATORS: Record<number, string> = {
@@ -23,13 +25,14 @@ function Bar({ value }: { value: LineValue }) {
   );
 }
 
-export default function Hexagram({ lines }: HexagramProps) {
+export default function Hexagram({ lines, compact }: HexagramProps) {
   return (
-    <div className={styles.diagram}>
+    <div className={`${styles.diagram} ${compact ? styles.compact : ''}`}>
       {[0, 1, 2, 3, 4, 5].map((pos) => (
         <div key={pos} className={styles.lineRow}>
           {pos < lines.length ? (
             <>
+              <span className={styles.label}>{lineLabel(pos, lines[pos], false)}</span>
               <div className={styles.barContainer}>
                 <Bar value={lines[pos]} />
               </div>
